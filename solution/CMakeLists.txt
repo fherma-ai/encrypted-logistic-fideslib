@@ -13,8 +13,10 @@ set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FIDESLIB_CXX_FLAGS}")
 set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler ${FIDESLIB_CXX_FLAGS}")
 
+# The four OpenFHE include roots: openfhe.h reaches into binfhe as well.
 include_directories(${OpenFHE_INCLUDE} ${OpenFHE_INCLUDE}/third-party/include
-                    ${OpenFHE_INCLUDE}/core ${OpenFHE_INCLUDE}/pke)
+                    ${OpenFHE_INCLUDE}/core ${OpenFHE_INCLUDE}/pke
+                    ${OpenFHE_INCLUDE}/binfhe)
 
 add_executable(solution main.cpp solve.cpp gpu.cu)
 # The fleet's two cards: the L40S (sm_89) and the RTX PRO 6000 Blackwell
