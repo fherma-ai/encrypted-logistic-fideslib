@@ -21,9 +21,15 @@ include_directories(${OpenFHE_INCLUDE} ${OpenFHE_INCLUDE}/third-party/include
 add_executable(solution main.cpp solve.cpp gpu.cu)
 # The fleet's two cards: the L40S (sm_89) and the RTX PRO 6000 Blackwell
 # (sm_120). FIDESlib in the image is compiled for the same two.
+# FIDESlib is built with device link-time optimisation, so the objects in
+# its static library are LTO intermediates, and the device link of anything
+# that uses them has to be an LTO link as well (nvlink: "LTO objects found,
+# use -dlto"). INTERPROCEDURAL_OPTIMIZATION is how CMake adds -dlto.
 set_target_properties(solution PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
-    CUDA_ARCHITECTURES "89-real;120-real")
+    CUDA_RESOLVE_DEVICE_SYMBOLS ON
+    CUDA_ARCHITECTURES "89-real;120-real"
+    INTERPROCEDURAL_OPTIMIZATION ON)
 # fideslib alone: it links the static OpenFHE into itself, and the shared one
 # beside it would be a second copy of every global.
 target_link_libraries(solution PRIVATE fideslib::fideslib)
