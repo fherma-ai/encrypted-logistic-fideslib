@@ -18,7 +18,7 @@
 
   // Ring dimension, a power of two. More slots and more room for depth at
   // the declared security level; slower and larger in the same measure.
-  "ring_dimension": 32768,
+  "ring_dimension": 16384,
 
   // Multiplicative depth: how many multiplications deep run() goes before
   // the levels run out. Each level costs modulus bits, and the ring must
